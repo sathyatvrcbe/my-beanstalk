@@ -13,7 +13,7 @@ public class ClientHandler implements Runnable {
     private Client client;
     public ClientHandler(Client client){
         this.client = client;
-        th = new Thread(this);
+        th = new Thread(this,"ClientHandler");
         th.start();
     }
 
@@ -38,6 +38,7 @@ public class ClientHandler implements Runnable {
             }
             System.out.println(command);
         }catch(Exception e){
+            e.printStackTrace();
             System.out.println("[Error] Error while handling client "+client.getClientId());
         }
         System.out.println("Finished serving client - "+client.getClientId());

@@ -2,6 +2,7 @@ package software.mybeans;
 
 import software.mybeans.commands.*;
 import software.mybeans.exceptions.CommandNotFoundException;
+import software.mybeans.models.ReservationQueue;
 import software.mybeans.models.Tube;
 
 import java.util.HashMap;
@@ -12,9 +13,12 @@ import java.util.Set;
 public class BeanSettings {
     private static HashMap<String, BeanCommand> commandMap;
     private static BeanCommand unknownCommand;
+    private static ReservationQueue reservationQueue;
 
     public static void loadSettings(){
         loadCommands();
+        JobManager.initialize();
+        reservationQueue = new ReservationQueue();
         TubeManager.initializeTubes();
     }
 
@@ -23,6 +27,10 @@ public class BeanSettings {
         commandMap.put("quit", new QuitCommand());
         commandMap.put("use", new UseCommand());
         commandMap.put("put", new PutCommand());
+        commandMap.put("watch", new WatchCommand());
+        commandMap.put("reserve", new ReserveCommand());
+        //commandMap.put("reserve-with-timeout", new ReserveCommand());
+        commandMap.put("delete", new DeleteCommand());
         unknownCommand = new UnknownCommand();
     }
 
@@ -32,5 +40,7 @@ public class BeanSettings {
         return unknownCommand;
     }
 
-
+    public static ReservationQueue getReservationQueue() {
+        return reservationQueue;
+    }
 }
