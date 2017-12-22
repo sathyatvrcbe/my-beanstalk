@@ -44,12 +44,12 @@ public class AppTest
         config.setServiceHost("127.0.0.1");
         config.setServicePort(15001);
         // create job producer and consumer
-        //simpleProduceAndConsume(config);
-        //priorityTest(config);
-        //delayTest(config);
-        //reserveMultiple(config);
-        //requeueTest(config);
-        //deleteTest(config);
+        simpleProduceAndConsume(config);
+        priorityTest(config);
+        delayTest(config);
+        reserveMultiple(config);
+        requeueTest(config);
+        deleteTest(config);
         loadTest(config);
     }
 
