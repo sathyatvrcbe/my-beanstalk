@@ -29,7 +29,7 @@ public class Tube implements Runnable {
             }
         });
         this.reservationRequestQueue = new LinkedList<ReservationRequest>();
-        System.out.println("Constructor =>" + this.hashCode());
+        //System.out.println("Constructor =>" + this.hashCode());
 
         th = new Thread(this, "TubeThread-" + tubeName);
         th.start();
@@ -50,7 +50,7 @@ public class Tube implements Runnable {
             }
         });
         this.reservationRequestQueue = new LinkedList<ReservationRequest>();
-        System.out.println("Constructor =>" + this.hashCode());
+        //System.out.println("Constructor =>" + this.hashCode());
 
         th = new Thread(this, "TubeThread-" + tubeName);
         th.start();
@@ -61,10 +61,10 @@ public class Tube implements Runnable {
     }
 
     synchronized public void addReservation(ReservationRequest reservationRequest) {
-        System.out.println("Adding reservationRequest");
+        //System.out.println("Adding reservationRequest");
 
-        System.out.println("Adding reservationRequest - 1");
-        System.out.println(this.hashCode());
+        //System.out.println("Adding reservationRequest - 1");
+        //System.out.println(this.hashCode());
         reservationRequestQueue.addLast(reservationRequest);
         notify();
 
@@ -73,8 +73,8 @@ public class Tube implements Runnable {
     synchronized public void queueJob(Job job) {
         queue.add(job);
         job.setStatus("READY");
-        System.out.println("Queue length - "+queue.size());
-        System.out.println("Top => " + new String(queue.peek().getJobData()));
+        //System.out.println("Queue length - "+queue.size());
+        //System.out.println("Top => " + new String(queue.peek().getJobData()));
         notify();
 
     }
@@ -84,9 +84,9 @@ public class Tube implements Runnable {
             try {
                 synchronized (this) {
                     if (reservationRequestQueue.size() == 0 || queue.size() == 0) {
-                        System.out.println("waiting on reservationRequestQueue");
+                        //System.out.println("waiting on reservationRequestQueue");
                         wait();
-                        System.out.println("notified..");
+                        //System.out.println("notified..");
                         continue;
                     }
                     ReservationRequest reservationRequest = reservationRequestQueue.getFirst();

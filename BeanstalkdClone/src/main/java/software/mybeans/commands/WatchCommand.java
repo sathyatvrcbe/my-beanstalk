@@ -14,7 +14,7 @@ public class WatchCommand implements BeanCommand{
         Tube tube = TubeManager.getTube(tubeName);
         client.watch(tube);
         out.write(("WATCHING "+tubeName+"\r\n").getBytes());
-        System.out.println("Watching "+tubeName);
+        //System.out.println("Watching "+tubeName);
         return false;
     }
 }

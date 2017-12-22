@@ -16,7 +16,7 @@ public class ServerThread implements Runnable {
         thread.start();
     }
     public void run() {
-        System.out.println("Server thread started!");
+        //System.out.println("Server thread started!");
         try {
             ServerSocket serverSocket = new ServerSocket(serverPort);
             while(true) {
@@ -25,7 +25,7 @@ public class ServerThread implements Runnable {
                 new ClientHandler(client);
             }
         }catch(Exception e){
-            System.out.println("[Error] Exception while starting server socket - "+e.getMessage());
+            //System.out.println("[Error] Exception while starting server socket - "+e.getMessage());
         }
     }
 }

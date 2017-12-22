@@ -20,7 +20,7 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
 
-            System.out.println("Started client - "+client.getClientId());
+            //System.out.println("Started client - "+client.getClientId());
             InputStream in = client.getClientSocket().getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String command = "";
@@ -30,18 +30,18 @@ public class ClientHandler implements Runnable {
                 char cc =  ((char)x);
                 command += cc;
                 if(cc == '\n'){
-                    System.out.println("currentCommand - "+command);
+                    //System.out.println("currentCommand - "+command);
                     boolean exit = process(command, in, client.getClientSocket().getOutputStream());
                     command = "";
                     if(exit) break;
                 }
             }
-            System.out.println(command);
+            //System.out.println(command);
         }catch(Exception e){
             e.printStackTrace();
-            System.out.println("[Error] Error while handling client "+client.getClientId());
+            //System.out.println("[Error] Error while handling client "+client.getClientId());
         }
-        System.out.println("Finished serving client - "+client.getClientId());
+        //System.out.println("Finished serving client - "+client.getClientId());
     }
 
     private boolean process(String command, InputStream in, OutputStream out) throws Exception{

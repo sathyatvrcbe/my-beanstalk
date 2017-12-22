@@ -11,8 +11,8 @@ public class App
     public static void main( String[] args )
     {
         BeanSettings.loadSettings();
-        System.out.println("starting server thread!");
-        int serverPort = 10000;
+        //System.out.println("starting server thread!");
+        int serverPort = 15001;
         new ServerThread(serverPort);
     }
 }

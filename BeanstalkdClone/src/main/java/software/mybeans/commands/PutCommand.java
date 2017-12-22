@@ -23,7 +23,7 @@ public class PutCommand implements BeanCommand {
 
     public boolean process(String command, final Client client, InputStream in, OutputStream out) throws IOException {
         final Tube tube = client.getTube();
-        System.out.println("PUT Command : "+command);
+        //System.out.println("PUT Command : "+command);
         String[] cmd = command.split(" ");
         int bytes = Integer.parseInt(cmd[4].trim());
         final int priority = Integer.parseInt(cmd[1]);
@@ -37,11 +37,11 @@ public class PutCommand implements BeanCommand {
         JobManager.addJob(job);
         scheduledExecutorService.schedule(new Runnable() {
             public void run() {
-                System.out.println("Scheduler putting job into tube...");
+                //System.out.println("Scheduler putting job into tube...");
                 tube.queueJob(job);
             }
         },delay, TimeUnit.SECONDS);
-        System.out.println("delay => "+delay);
+        //System.out.println("delay => "+delay);
         out.write(("INSERTED "+job.getJobId()+"\r\n").getBytes());
         return false;
     }

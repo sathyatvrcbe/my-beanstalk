@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import software.mybeans.server.ServerThread;
 
+import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -39,21 +40,47 @@ public class AppTest
      */
     public void testApp()
     {
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         Configuration config = new Configuration();
         config.setServiceHost("127.0.0.1");
-        config.setServicePort(10000);
+        config.setServicePort(15001);
         // create job producer and consumer
-        simpleProduceAndConsume(config);
-        priorityTest(config);
-        delayTest(config);
-        reserveMultiple(config);
-        requeueTest(config);
-        deleteTest(config);
+        //simpleProduceAndConsume(config);
+        //priorityTest(config);
+        //delayTest(config);
+        //reserveMultiple(config);
+        //requeueTest(config);
+        //deleteTest(config);
+        loadTest(config);
+    }
+
+    public void loadTest(Configuration config){
+        BeanstalkClientFactory factory = new BeanstalkClientFactory(config);
+        JobProducer producer = factory.createJobProducer("loadtest");
+        long start = (new Date()).getTime();
+        for(int i=0;i<100000;i++) {
+            for(int j=0;j<10;j++) {
+                Long jobId = producer.putJob(0, 0, 100, "Hello".getBytes());
+            }
+        }
+        long end = (new Date()).getTime();
+        System.out.println("Time to insert jobs => "+ (end-start)/1000 +" seconds");
+
+        producer.close();
+
+        JobConsumer consumer = factory.createJobConsumer("loadtest");
+        start = (new Date()).getTime();
+        for(int i=0;i<100000;i++) {
+            for(int j=0;j<10;j++) {
+                Job job = consumer.reserveJob(0);
+                consumer.deleteJob(job.getId());
+            }
+        }
+        end = (new Date()).getTime();
+        System.out.println("Time to reserve & delete jobs => "+ (end-start)/1000 +" seconds");
+
+        assertTrue( true);
+        consumer.close();
+
     }
 
     public void deleteTest(Configuration config){
@@ -103,6 +130,11 @@ public class AppTest
         assertTrue( new String(job.getData()).equals("Hello") );
 
         job = consumer.reserveJob(0);
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("Job Received => "+new String(job.getData()));
 
         assertTrue( new String(job.getData()).equals("Hello") );
@@ -202,13 +234,13 @@ public class AppTest
 
         JobConsumer consumer = factory.createJobConsumer("testa");
         Job job = consumer.reserveJob(0);
-        System.out.println("!!!"+new String(job.getData())+" ");
+        System.out.println("msg => "+new String(job.getData())+" ");
         assertTrue( new String(job.getData()).equals("!") );
         job = consumer.reserveJob(0);
-        System.out.println("!!!"+new String(job.getData()));
+        System.out.println("msg => "+new String(job.getData()));
         assertTrue( new String(job.getData()).equals("World") );
         job = consumer.reserveJob(0);
-        System.out.println("!!!"+new String(job.getData()));
+        System.out.println("msg => "+new String(job.getData()));
         assertTrue( new String(job.getData()).equals("Hello") );
         consumer.close();
 
